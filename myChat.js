@@ -1,14 +1,23 @@
-var database = firebase.database().ref();//link to our database
+var a = {
+apiKey: "AIzaSyBWXLIWLm8rRmVJGzOpR_P6Lm58Z3Qm51I",
+authDomain: "human-race.firebaseapp.com",
+databaseURL: "https://human-race.firebaseio.com",
+storageBucket: "human-race.appspot.com",
+};
+firebase.initializeApp(a);
 
-function sendMessage(){
-	var name = $("#name").val();
-	var message = $("#message").val();
-	database.push({
-		'NAME': name,
-		'MESSAGE': message
-	});
-}
-   database.on('child_added',function(dataRow){
-	var row = dataRow.val();
-    $("#messageBoard").append("<p>" + row.NAME + ": " + row.MESSAGE);
+$('#email').val('');
+
+$(document).keypress(function(e) {
+    if(e.which == 13) {
+        submit();
+    }
 })
+
+function submit() {
+    var person = $('#email').val();
+    if (person.length > 0) {
+        firebase.database().ref('email/' + person).update({phone: person});
+        $('#email').val('');
+    }
+}
